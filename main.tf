@@ -9,13 +9,13 @@ module "cloudflare_core" {
 module "worker_app" {
   source = "./modules/worker-app"
 
-  cloudflare_account_id = var.cloudflare_account_id
-  zone_id               = module.cloudflare_core.zone_id
-  zone_name             = var.zone_name
-  worker_name           = var.worker_name
-  worker_hostname       = var.worker_hostname
-  worker_script_path    = "${path.root}/worker/indexer.js"
-  kv_state_namespace_id = module.cloudflare_core.state_kv_namespace_id
+  cloudflare_account_id   = var.cloudflare_account_id
+  zone_id                 = module.cloudflare_core.zone_id
+  zone_name               = var.zone_name
+  worker_name             = var.worker_name
+  worker_hostname         = var.worker_hostname
+  worker_script_path      = "${path.root}/worker/indexer.js"
+  kv_state_namespace_id   = module.cloudflare_core.state_kv_namespace_id
   kv_content_namespace_id = module.cloudflare_core.content_kv_namespace_id
 }
 
@@ -35,28 +35,4 @@ module "apex_redirect" {
   cloudflare_zone_id = module.cloudflare_core.zone_id
   apex_hostname      = var.zone_name
   www_hostname       = var.pages_hostname
-}
-resource "cloudflare_ruleset" "this" {
-  zone_id     = var.cloudflare_zone_id
-  name        = "apex-to-www"
-  description = "Redirect apex to www"
-  kind        = "zone"
-  phase       = "http_request_dynamic_redirect"
-
-  rules {
-    enabled     = true
-    description = "Redirect apex host to www"
-    expression  = "(http.host eq \"${var.apex_hostname}\")"
-    action      = "redirect"
-
-    action_parameters {
-      from_value {
-        status_code = 301
-        target_url {
-          expression = "concat(\"https://${var.www_hostname}\", http.request.uri.path)"
-        }
-        preserve_query_string = true
-      }
-    }
-  }
 }
