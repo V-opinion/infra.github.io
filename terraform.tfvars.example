@@ -1,0 +1,13 @@
+cloudflare_api_token      = "..."
+github_token              = "..."
+github_owner              = "your-org-or-user"
+cloudflare_account_id      = "..."
+zone_name                 = "multireligionvalsystem.eu.org"
+project_name              = "indexer"
+
+worker_name               = "indexer"
+worker_hostname           = "infra.multireligionvalsystem.eu.org"
+
+repo_name                 = "site"
+pages_hostname            = "www.multireligionvalsystem.eu.org"
+github_pages_cname_target = "youruser.github.io"
